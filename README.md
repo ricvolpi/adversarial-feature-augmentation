@@ -6,4 +6,8 @@ Step 1: training a feature generator to perform feature augmentation in the sour
 
 Step 2: training an encoder by adapting it to the source features, relying on the pre-trained feature generator.
 
+## Instructions
 
+### Prerequisites
+
+Python 2.7, Tensorflow 1.3
