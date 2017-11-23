@@ -32,7 +32,7 @@ To train a ConvNet feature extractor, run
 python main.py --mode=train_feature_extractor --gpu=0
 ```
 
-To train a generator of features that resemble the one extracted through the pre-trained feature extractor, run
+To train a generator of features that resemble the ones extracted through the pre-trained feature extractor, run
 
 ```
 python main.py --mode=train_feature_generator --gpu=0
