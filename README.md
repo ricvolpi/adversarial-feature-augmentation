@@ -11,6 +11,7 @@ Step 1: training a feature generator to perform feature augmentation in the sour
 ### Files
 
 Model.py: contains the models described in the paper, implemented in Tensorflow (slim)
+
 TrainOps.py: contains the operations to perform Step 0 and Step 1, described in the paper. (Step 2 WIP)
 
 ### Prerequisites
