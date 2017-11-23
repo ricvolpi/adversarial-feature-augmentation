@@ -42,5 +42,5 @@ Of course, you choose the GPU index. The resulting model (feature_generator) can
 
 ## What to expect
 
-In all our experiments, carried out on six different datasets, we could observe the same pattern while training the feature generator: the discriminator will seem to win the minimax game for the first few thousand iterations, then the loss associated to the generator will start to decrease. In every experiment we ran, the minimax game converged to a very stable equilibrium, with the discriminator giving as outputs numbers very close to 0.5, independently by the inputs given (real/generated features).
+In all our experiments, carried out on six different datasets, we could observe the same pattern while training the feature generator: the discriminator wins the minimax game for the first few thousand iterations, then the loss associated to the generator will starts decrease. In every experiment we ran, the minimax game converged to a very stable equilibrium, with the discriminator giving as outputs numbers very close to 0.5, independently by the inputs given (real/generated features).
 
