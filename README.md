@@ -38,7 +38,7 @@ To train a generator of features that resemble the one extracted through the pre
 python main.py --mode=train_feature_generator --gpu=0
 ```
 
-Of course, you choose the GPU index.
+Of course, you choose the GPU index. The resulting model (feature_generator) can be used to generate new features from the desired classes, by feeding it with noise vectors concatenated with one-hot label codes.
 
 ## What to expect
 
