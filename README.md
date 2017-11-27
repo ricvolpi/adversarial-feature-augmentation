@@ -1,4 +1,4 @@
-# Code for the paper Adversarial Feature Augmentation for Unsupervised Domain Adaptation
+# Code for the paper [Adversarial Feature Augmentation for Unsupervised Domain Adaptation](https://arxiv.org/abs/1711.08561)
 
 Step 0: training a classifier on source data.
 
