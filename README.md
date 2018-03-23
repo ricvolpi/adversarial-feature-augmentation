@@ -40,8 +40,11 @@ To train a generator of features that resemble the ones extracted through the pr
 ```
 python main.py --mode=train_feature_generator --gpu=0
 ```
+The resulting model (feature_generator) can be used to generate new features from the desired classes, by feeding it with noise vectors concatenated with one-hot label codes. To adapt the feature extractor trained on SVHN to MNIST data, run
 
-Of course, you choose the GPU index. The resulting model (feature_generator) can be used to generate new features from the desired classes, by feeding it with noise vectors concatenated with one-hot label codes.
+```
+python main.py --mode=train_DIFA --gpu=0
+```
 
 ## What to expect
 
