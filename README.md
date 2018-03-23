@@ -32,19 +32,20 @@ sh download_svhn.sh
 To train a ConvNet feature extractor using SVHN data, run
 
 ```
-python main.py --mode=train_feature_extractor --gpu=0
+python main.py --mode=train_feature_extractor
 ```
 
 To train a generator of features that resemble the ones extracted through the pre-trained feature extractor, run
 
 ```
-python main.py --mode=train_feature_generator --gpu=0
+python main.py --mode=train_feature_generator
 ```
 The resulting model (feature_generator) can be used to generate new features from the desired classes, by feeding it with noise vectors concatenated with one-hot label codes. To adapt the feature extractor trained on SVHN to MNIST data, run
 
 ```
-python main.py --mode=train_DIFA --gpu=0
+python main.py --mode=train_DIFA
 ```
+Default GPU index is 0. To use a different GPU, add --gpu=GPU_IDX when launching. 
 
 ## What to expect
 
