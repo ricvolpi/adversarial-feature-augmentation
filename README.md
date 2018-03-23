@@ -4,15 +4,15 @@ Step 0: training a classifier on source data.
 
 Step 1: training a feature generator to perform feature augmentation in the source feature space.
 
-(WIP) Step 2: training an encoder by adapting it to the source features, relying on the pre-trained feature generator.
+Step 2: training an encoder by adapting it to the source features, relying on the pre-trained feature generator.
 
 ## Overview
 
 ### Files
 
-Model.py: contains the models described in the paper, implemented in Tensorflow (slim)
+model.py: contains the models described in the paper, implemented in Tensorflow (slim)
 
-TrainOps.py: contains the operations to perform Step 0 and Step 1, described in the paper (Step 2 WIP).
+trainOps.py: contains the operations to perform Step 0 and Step 1, described in the paper (Step 2 WIP).
 
 ### Prerequisites
 
@@ -20,13 +20,16 @@ Python 2.7, Tensorflow 1.3
 
 ## How it works
 
-To obtain the MNIST dataset, run
+To obtain MNIST and SVHN dataset, run
 
 ```
 python download_and_process_mnist.py
 ```
+```
+sh download_svhn.sh
+```
 
-To train a ConvNet feature extractor, run
+To train a ConvNet feature extractor using SVHN data, run
 
 ```
 python main.py --mode=train_feature_extractor --gpu=0
