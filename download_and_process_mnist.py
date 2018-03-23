@@ -7,7 +7,7 @@ from tensorflow.examples.tutorials.mnist import input_data
 
 
 
-def resize_images(image_arrays, size=[28,28]):
+def resize_images(image_arrays, size=[32,32]):
     image_arrays = (image_arrays * 255).astype('uint8')
     
     resized_image_arrays = np.zeros([image_arrays.shape[0]]+size)

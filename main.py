@@ -1,6 +1,6 @@
 import tensorflow as tf
-from Model import Model
-from TrainOps import TrainOps
+from model import Model
+from trainOps import TrainOps
 import os
 import numpy.random as npr
 
@@ -30,6 +30,11 @@ def main(_):
 	model = Model(mode=FLAGS.mode, learning_rate=0.0001)
         op = TrainOps(model)	
 	op.train_feature_generator()
+	
+    elif FLAGS.mode == 'train_DIFA':
+	model = Model(mode=FLAGS.mode, learning_rate=0.00001)
+        op = TrainOps(model)	
+	op.train_DIFA()
 	
     else:
 	print 'Unrecognized mode.'
