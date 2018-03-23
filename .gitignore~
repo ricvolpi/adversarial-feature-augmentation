@@ -1,0 +1,8 @@
+*.gitignore
+*.gitignore~
+*.pyc
+run_all.sh
+
+/data
+/logs
+/model
