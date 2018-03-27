@@ -9,7 +9,7 @@ class Model(object):
     
     """
     Reference: Volpi et al., Adversarial Feature Augmentation 
-    for Unsupervised Domain Adpatation, CVPR 2018
+    for Unsupervised Domain Adaptation, CVPR 2018
     
     Author: Riccardo Volpi
     """
