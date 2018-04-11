@@ -3,3 +3,4 @@ logs/
 model/
 *.pyc
 *.pkl
+*.txt
