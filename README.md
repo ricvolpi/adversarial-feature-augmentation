@@ -1,19 +1,19 @@
 # Code for the paper [Adversarial Feature Augmentation for Unsupervised Domain Adaptation](https://arxiv.org/abs/1711.08561)
 
 
-Step 0: training a classifier on source data.
+**Step 0**: training a classifier on source data.
 
-Step 1: training a feature generator to perform feature augmentation in the source feature space.
+**Step 1**: training a feature generator to perform feature augmentation in the source feature space.
 
-Step 2: training an encoder by adapting it to the source features.
+**Step 2**: training an encoder by adapting it to the source features.
 
 ## Overview
 
 ### Files
 
-model.py: contains the models described in the paper, implemented in Tensorflow (slim)
+``model.py``: contains the models described in the paper, implemented in Tensorflow (slim)
 
-trainOps.py: contains the operations to perform Step 0, Step 1 and Step 2.
+``trainOps.py``: contains the operations to perform Step 0, Step 1 and Step 2.
 
 ### Prerequisites
 
@@ -25,8 +25,6 @@ To obtain MNIST and SVHN dataset, run
 
 ```
 python download_and_process_mnist.py
-```
-```
 sh download_svhn.sh
 ```
 
