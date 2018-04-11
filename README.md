@@ -64,6 +64,6 @@ Riccardo Volpi, Pietro Morerio, Silvio Savarese and Vittorio Murino *[PDF](https
     @InProceedings{Volpi2018Adversarial,
         title={Adversarial Feature Augmentation for Unsupervised Domain Adaptation},
         author=Volpi, Riccardo and Morerio, Pietro and Savarese, Silvio and Murino, Vittorio},
-        booktitle = {CVPR},
+        booktitle={CVPR},
         year={2018}
     } 
