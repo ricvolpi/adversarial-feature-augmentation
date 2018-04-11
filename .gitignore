@@ -1,0 +1,5 @@
+data/
+logs/
+model/
+*.pyc
+*.pkl
