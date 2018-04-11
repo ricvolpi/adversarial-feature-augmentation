@@ -255,8 +255,8 @@ class Model(object):
                 self.d_train_op = slim.learning.create_train_op(self.d_loss, self.d_optimizer, variables_to_train=d_vars)
             
             # summary op
-            e_loss_summary = tf.summary.scalar('e_loss', self.e_loss)
-            d_loss_summary = tf.summary.scalar('d_loss', self.d_loss)
+            e_loss_summary = tf.summary.scalar('G_loss', self.e_loss)
+            d_loss_summary = tf.summary.scalar('D_loss', self.d_loss)
             self.summary_op = tf.summary.merge([e_loss_summary, d_loss_summary])
             
 
