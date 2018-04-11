@@ -48,9 +48,20 @@ Default GPU index is 0. To use a different GPU, add --gpu=GPU_IDX when launching
 
 ## What to expect
 
-In all our experiments, carried out on six different datasets, we could observe the same pattern while training the feature generator: the discriminator wins the minimax game for the first few thousand iterations, then the loss associated to the generator starts to decrease. In every experiment we ran, the minimax game converged to a very stable equilibrium, with the discriminator giving as outputs numbers very close to 0.5, independently by the inputs given (real/generated features).
+In all our experiments, carried out on six different datasets, we could observe the same pattern while training the *feature generator*: the discriminator wins the minimax game for the first few thousand iterations, then the loss associated to the generator starts to decrease. In every experiment we ran, the minimax game converged to a very stable equilibrium, with the discriminator giving as outputs numbers very close to 0.5, independently by the inputs given (real/generated features).
 
-![plot](./plot.png)
+![plot](./pics/plot.png) 
+
+*Discriminator and generator losses for Step 1*
+
+![plot2](./pics/plot2.png) 
+
+*Discriminator and generator losses for Step 2*
+
+![acc](./pics/accuracy.png) 
+
+*MNIST target accuracy*
+
 
 ## Reference
 
