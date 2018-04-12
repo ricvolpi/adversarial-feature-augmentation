@@ -37,7 +37,7 @@ def main(_):
 	op.train_DIFA()
 	
     elif FLAGS.mode == 'train_decoder':
-	model = Model(mode=FLAGS.mode, learning_rate=0.00001)
+	model = Model(mode=FLAGS.mode, learning_rate=0.0001)
         op = TrainOps(model)	
 	op.train_decoder()
 	

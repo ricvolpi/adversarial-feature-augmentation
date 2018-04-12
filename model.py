@@ -130,15 +130,15 @@ class Model(object):
             with slim.arg_scope([slim.conv2d_transpose], padding='SAME', activation_fn=None,           
                                  stride=2, weights_initializer=tf.contrib.layers.xavier_initializer()):
                 with slim.arg_scope([slim.batch_norm], decay=0.95, center=True, scale=True, 
-                                     activation_fn=tf.tanh, is_training=(self.mode=='train_decoder')):
+                                     activation_fn=tf.nn.relu, is_training=(self.mode=='train_decoder')):
 
                     net = slim.conv2d_transpose(features, 512, [4, 4], padding='VALID', scope='conv_transpose1')   # (batch_size, 4, 4, 512)
                     net = slim.batch_norm(net, scope='bn1')
-                    net = slim.conv2d_transpose(net, 256, [3, 3], scope='conv_transpose2')  # (batch_size, 8, 8, 256)
+                    net = slim.conv2d_transpose(net, 256, [4, 4], scope='conv_transpose2')  # (batch_size, 8, 8, 256)
                     net = slim.batch_norm(net, scope='bn2')
-		    net = slim.conv2d_transpose(net, 128, [3, 3], scope='conv_transpose3')  # (batch_size, 16, 16, 128)
+		    net = slim.conv2d_transpose(net, 128, [4, 4], scope='conv_transpose3')  # (batch_size, 16, 16, 128)
                     net = slim.batch_norm(net, scope='bn3')
-		    net = slim.conv2d_transpose(net, 3, [3, 3], scope='conv_transpose4')   # (batch_size, 32, 32, 1)
+		    net = slim.conv2d_transpose(net, 3, [4, 4], activation_fn=tf.nn.tanh, scope='conv_transpose4')   # (batch_size, 32, 32, 3)
 		    return net
     
     def build_model(self):
@@ -305,8 +305,9 @@ class Model(object):
 	    
             # summary
             loss_summary = tf.summary.scalar('reconstruction_loss', self.loss)
-            image_summary = tf.summary.image('reconstructed_images', self.reconstructed_images, max_outputs=16)
-            self.summary_op = tf.summary.merge([loss_summary, image_summary])
+            reconstructed_image_summary = tf.summary.image('reconstructed_images', self.reconstructed_images, max_outputs=3)
+            image_summary = tf.summary.image('original_images', self.images, max_outputs=3)
+            self.summary_op = tf.summary.merge([loss_summary, reconstructed_image_summary, image_summary])
 
         else:
 	    raise Exception('Unknown mode.')

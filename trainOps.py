@@ -11,7 +11,7 @@ import utils
 
 class TrainOps(object):
 
-    def __init__(self, model, batch_size=64, pretrain_epochs=10, train_feature_generator_iters=15001, train_DIFA_iters=100001, train_decoder_iters=100001, 
+    def __init__(self, model, batch_size=64, pretrain_epochs=10, train_feature_generator_iters=15001, train_DIFA_iters=100001, train_decoder_iters=200001, 
                  mnist_dir='./data/mnist', svhn_dir='./data/svhn', log_dir='./logs', model_save_path='./model', 
 		 pretrained_feature_extractor='feature_extractor', pretrained_feature_generator='feature_generator',
 		 DIFA_feature_extractor='DIFA_feature_extractor', pretrained_decoder='decoder'):
@@ -270,7 +270,7 @@ class TrainOps(object):
 	
 		sess.run(model.train_op, feed_dict)
 		
-		if (step+1) % 100 == 0:
+		if (step+1) % 500 == 0:
 		    summary, loss = sess.run([model.summary_op, model.loss], feed_dict)
 		    summary_writer.add_summary(summary, step)
 		    print ('Step: [%d/%d] loss: %.6f ' \
