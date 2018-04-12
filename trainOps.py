@@ -11,10 +11,10 @@ import utils
 
 class TrainOps(object):
 
-    def __init__(self, model, batch_size=64, pretrain_epochs=10, train_feature_generator_iters=15001, train_DIFA_iters=100001, 
+    def __init__(self, model, batch_size=64, pretrain_epochs=10, train_feature_generator_iters=15001, train_DIFA_iters=100001, train_decoder_iters=100001, 
                  mnist_dir='./data/mnist', svhn_dir='./data/svhn', log_dir='./logs', model_save_path='./model', 
 		 pretrained_feature_extractor='feature_extractor', pretrained_feature_generator='feature_generator',
-		 DIFA_feature_extractor='DIFA_feature_extractor'):
+		 DIFA_feature_extractor='DIFA_feature_extractor', pretrained_decoder='decoder'):
         
         self.model = model
         self.batch_size = batch_size
@@ -23,6 +23,7 @@ class TrainOps(object):
 	self.pretrain_epochs = pretrain_epochs
         self.train_feature_generator_iters = train_feature_generator_iters
         self.train_DIFA_iters = train_DIFA_iters
+        self.train_decoder_iters = train_decoder_iters
         
 	# Dataset directory
         self.mnist_dir = mnist_dir
@@ -33,6 +34,7 @@ class TrainOps(object):
 	self.pretrained_feature_extractor = os.path.join(self.model_save_path, pretrained_feature_extractor)
 	self.pretrained_feature_generator = os.path.join(self.model_save_path, pretrained_feature_generator)
 	self.DIFA_feature_extractor = os.path.join(self.model_save_path, DIFA_feature_extractor)
+	self.pretrained_decoder = os.path.join(self.model_save_path, pretrained_decoder)
 	
 	self.log_dir = log_dir
         
@@ -232,6 +234,50 @@ class TrainOps(object):
 		    
 	    print 'Saving.'
 	    saver.save(sess, self.DIFA_feature_extractor)
+	    
+    def train_decoder(self):
+	
+	print 'Training decoder.'
+        
+	images, _ = self.load_svhn(self.svhn_dir, split='train')
+    
+        # build a graph
+        model = self.model
+        model.build_model()
+
+        with tf.Session(config=self.config) as sess:
+	    
+            # initialize variables
+            tf.global_variables_initializer().run()
+            
+	    # restore feature extractor trained on Step 0
+            print ('Loading pretrained feature extractor.')
+            variables_to_restore = slim.get_model_variables(scope='feature_extractor')
+            restorer = tf.train.Saver(variables_to_restore)
+            restorer.restore(sess, self.pretrained_feature_extractor)
+	    print 'Loaded'
+            
+            summary_writer = tf.summary.FileWriter(logdir=self.log_dir, graph=tf.get_default_graph())
+            saver = tf.train.Saver()
+	    
+	    for step in range(self.train_decoder_iters):
+
+		i = step % int(images.shape[0] / self.batch_size)
+		
+		images_batch = images[i*self.batch_size:(i+1)*self.batch_size]
+
+		feed_dict = {model.images: images_batch}
+	
+		sess.run(model.train_op, feed_dict)
+		
+		if (step+1) % 100 == 0:
+		    summary, loss = sess.run([model.summary_op, model.loss], feed_dict)
+		    summary_writer.add_summary(summary, step)
+		    print ('Step: [%d/%d] loss: %.6f ' \
+			       %(step+1, self.train_decoder_iters, loss) )
+		    
+	    print 'Saving.'
+	    saver.save(sess, self.pretrained_decoder)
 
 if __name__=='__main__':
 

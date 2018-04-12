@@ -114,7 +114,33 @@ class Model(object):
 		net = slim.fully_connected(features, 1024, activation_fn = lrelu, scope='sdisc_DIFA_fc1')
 		net = slim.fully_connected(net,1,activation_fn=tf.sigmoid,scope='sdisc_DIFA_prob')
 		return net
+    
+    def decoder(self, features, reuse=False):
+	
+	'''
+	Alpha version:
+	Reconstructs input images from feature representation
+	'''
+	
+	if features.get_shape()[1] != 1:
+	    features = tf.expand_dims(features, 1)
+	    features = tf.expand_dims(features, 1)
+	    
+	with tf.variable_scope('decoder', reuse=reuse):
+            with slim.arg_scope([slim.conv2d_transpose], padding='SAME', activation_fn=None,           
+                                 stride=2, weights_initializer=tf.contrib.layers.xavier_initializer()):
+                with slim.arg_scope([slim.batch_norm], decay=0.95, center=True, scale=True, 
+                                     activation_fn=tf.tanh, is_training=(self.mode=='train_decoder')):
 
+                    net = slim.conv2d_transpose(features, 512, [4, 4], padding='VALID', scope='conv_transpose1')   # (batch_size, 4, 4, 512)
+                    net = slim.batch_norm(net, scope='bn1')
+                    net = slim.conv2d_transpose(net, 256, [3, 3], scope='conv_transpose2')  # (batch_size, 8, 8, 256)
+                    net = slim.batch_norm(net, scope='bn2')
+		    net = slim.conv2d_transpose(net, 128, [3, 3], scope='conv_transpose3')  # (batch_size, 16, 16, 128)
+                    net = slim.batch_norm(net, scope='bn3')
+		    net = slim.conv2d_transpose(net, 3, [3, 3], scope='conv_transpose4')   # (batch_size, 32, 32, 1)
+		    return net
+    
     def build_model(self):
         
         if self.mode == 'train_feature_extractor':
@@ -122,7 +148,6 @@ class Model(object):
 	    #################################################################################################################
 	    # Step 0: training a classifier to classify well some images (source images, if using it for domain adaptation) #
 	    #################################################################################################################
-	    
 	    
 	    self.images = tf.placeholder(tf.float32, [None, 32, 32, 3], 'images')
 	    self.labels = tf.placeholder(tf.int64, [None], 'labels')
@@ -149,7 +174,6 @@ class Model(object):
 	    #######################################################################################################################
 	    # Step 1: training a feature generator to generate realistic features conditioning on a noise vector and a label code #
 	    #######################################################################################################################
-	    
 				
 	    self.images = tf.placeholder(tf.float32, [None, 32, 32, 3], 'images')
 	    self.noise = tf.placeholder(tf.float32, [None, 100], 'noise')
@@ -263,6 +287,27 @@ class Model(object):
             for var in tf.trainable_variables():
 		tf.summary.histogram(var.op.name, var) 
         
+	elif self.mode == 'train_decoder':
+	    
+	    #################################################################################################################
+	    # Alpha version: reconstruct images from precomputed feature repr
+	    #################################################################################################################
+	    
+	    self.images = tf.placeholder(tf.float32, [None, 32, 32, 3], 'images')
+	    self.features = self.feature_extractor(self.images)
+	    self.reconstructed_images = self.decoder(self.features)
+	    
+	    t_vars = [var for var in tf.trainable_variables() if 'decoder' in var.name]
+	    
+	    self.loss = slim.losses.mean_squared_error(self.reconstructed_images, self.images)
+            self.optimizer = tf.train.AdamOptimizer(self.learning_rate) 
+            self.train_op = slim.learning.create_train_op(self.loss, self.optimizer, variables_to_train=t_vars)
+	    
+            # summary
+            loss_summary = tf.summary.scalar('reconstruction_loss', self.loss)
+            image_summary = tf.summary.image('reconstructed_images', self.reconstructed_images, max_outputs=16)
+            self.summary_op = tf.summary.merge([loss_summary, image_summary])
+
         else:
 	    raise Exception('Unknown mode.')
 

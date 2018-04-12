@@ -36,6 +36,11 @@ def main(_):
         op = TrainOps(model)	
 	op.train_DIFA()
 	
+    elif FLAGS.mode == 'train_decoder':
+	model = Model(mode=FLAGS.mode, learning_rate=0.00001)
+        op = TrainOps(model)	
+	op.train_decoder()
+	
     else:
 	print 'Unrecognized mode.'
 	
