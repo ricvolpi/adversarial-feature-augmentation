@@ -293,33 +293,29 @@ class Model(object):
 	    # Alpha version: reconstruct images from precomputed feature repr
 	    #################################################################################################################
 	    
+	    # model
 	    self.images = tf.placeholder(tf.float32, [None, 32, 32, 3], 'images')
 	    self.features = self.feature_extractor(self.images)
 	    self.reconstructed_images = self.decoder(self.features)
+	    self.reconstructed_features = self.feature_extractor(self.reconstructed_images, reuse=True)
 	    
+	    # losses
+	    self.image_loss = slim.losses.mean_squared_error(self.reconstructed_images, self.images)
+	    self.feature_loss = slim.losses.mean_squared_error(self.reconstructed_features, self.features)
+	    self.loss = self.image_loss + self.feature_loss
+	    
+	    # optimization
 	    t_vars = [var for var in tf.trainable_variables() if 'decoder' in var.name]
-	    
-	    self.loss = slim.losses.mean_squared_error(self.reconstructed_images, self.images)
             self.optimizer = tf.train.AdamOptimizer(self.learning_rate) 
             self.train_op = slim.learning.create_train_op(self.loss, self.optimizer, variables_to_train=t_vars)
 	    
             # summary
-            loss_summary = tf.summary.scalar('reconstruction_loss', self.loss)
+            loss_summary = tf.summary.scalar('total_loss', self.loss)
+            loss_image_summary = tf.summary.scalar('image_reconstruction_loss', self.image_loss)
+            loss_features_summary = tf.summary.scalar('feature_loss', self.feature_loss)
             reconstructed_image_summary = tf.summary.image('reconstructed_images', self.reconstructed_images, max_outputs=3)
             image_summary = tf.summary.image('original_images', self.images, max_outputs=3)
-            self.summary_op = tf.summary.merge([loss_summary, reconstructed_image_summary, image_summary])
+            self.summary_op = tf.summary.merge([loss_summary, loss_image_summary, loss_features_summary, reconstructed_image_summary, image_summary])
 
         else:
 	    raise Exception('Unknown mode.')
-
-
-
-
-
-
-
-
-
-
-
-
