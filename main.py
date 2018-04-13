@@ -41,6 +41,11 @@ def main(_):
         op = TrainOps(model)	
 	op.train_decoder()
 	
+    elif FLAGS.mode == 'generate_images':
+	model = Model(mode=FLAGS.mode, learning_rate=0.0001)
+        op = TrainOps(model)	
+	op.generate_images()
+	
     else:
 	print 'Unrecognized mode.'
 	

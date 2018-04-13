@@ -302,7 +302,7 @@ class Model(object):
 	    # losses
 	    self.image_loss = slim.losses.mean_squared_error(self.reconstructed_images, self.images)
 	    self.feature_loss = slim.losses.mean_squared_error(self.reconstructed_features, self.features)
-	    self.loss = self.image_loss + self.feature_loss
+	    self.loss = self.image_loss + 0.1*self.feature_loss
 	    
 	    # optimization
 	    t_vars = [var for var in tf.trainable_variables() if 'decoder' in var.name]
@@ -316,6 +316,21 @@ class Model(object):
             reconstructed_image_summary = tf.summary.image('reconstructed_images', self.reconstructed_images, max_outputs=3)
             image_summary = tf.summary.image('original_images', self.images, max_outputs=3)
             self.summary_op = tf.summary.merge([loss_summary, loss_image_summary, loss_features_summary, reconstructed_image_summary, image_summary])
-
+	
+	elif self.mode == 'generate_images':
+	    
+	    #################################################################################################################
+	    # Alpha version: generate features through S and generate corresponding image through pretrained decoder
+	    #################################################################################################################
+	    
+	    # model
+	    self.noise = tf.placeholder(tf.float32, [None, 100], 'noise')
+	    self.labels = tf.placeholder(tf.int64, [None, 10], 'labels')
+	    self.gen_features = self.feature_generator(self.noise, self.labels) 
+	    self.gen_images = self.decoder(self.gen_features)
+	    
+            # summary
+            gen_image_summary = tf.summary.image('generated_images', self.gen_images, max_outputs=10)
+            self.summary_op = tf.summary.merge([gen_image_summary])
         else:
 	    raise Exception('Unknown mode.')

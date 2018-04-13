@@ -11,7 +11,7 @@ import utils
 
 class TrainOps(object):
 
-    def __init__(self, model, batch_size=64, pretrain_epochs=10, train_feature_generator_iters=15001, train_DIFA_iters=100001, train_decoder_iters=200001, 
+    def __init__(self, model, batch_size=64, pretrain_epochs=10, train_feature_generator_iters=15001, train_DIFA_iters=100001, train_decoder_iters=500001, 
                  mnist_dir='./data/mnist', svhn_dir='./data/svhn', log_dir='./logs', model_save_path='./model', 
 		 pretrained_feature_extractor='feature_extractor', pretrained_feature_generator='feature_generator',
 		 DIFA_feature_extractor='DIFA_feature_extractor', pretrained_decoder='decoder'):
@@ -278,6 +278,48 @@ class TrainOps(object):
 		    
 	    print 'Saving.'
 	    saver.save(sess, self.pretrained_decoder)
+    
+    def generate_images(self):
+	
+	print 'Training sampler.'
+    
+        # build a graph
+        model = self.model
+        model.build_model()
+
+	noise_dim = 100
+
+        with tf.Session(config=self.config) as sess:
+	    
+            # initialize variables
+            tf.global_variables_initializer().run()
+            
+	    # restore feature generator trained on Step 0
+            print ('Loading pretrained feature generator.')
+            variables_to_restore = slim.get_model_variables(scope='feature_generator')
+            restorer = tf.train.Saver(variables_to_restore)
+            restorer.restore(sess, self.pretrained_feature_generator)
+	    print 'Loaded'
+	    
+	    print ('Loading pretrained decoder.')
+            variables_to_restore = slim.get_model_variables(scope='decoder')
+            restorer = tf.train.Saver(variables_to_restore)
+            restorer.restore(sess, self.pretrained_decoder)
+	    print 'Loaded'
+            
+            summary_writer = tf.summary.FileWriter(logdir=self.log_dir, graph=tf.get_default_graph())
+            saver = tf.train.Saver()
+	    
+	    i=0
+	    while(True):
+		i+=1
+		labels_batch = np.eye(10)
+		noise = utils.sample_Z(10, noise_dim, 'uniform')
+		feed_dict = {model.noise: noise,  model.labels: labels_batch}
+		summary, _ = sess.run([model.summary_op, model.gen_images], feed_dict)
+		summary_writer.add_summary(summary, i)
+		print ('Batch', i)
+		    
 
 if __name__=='__main__':
 
