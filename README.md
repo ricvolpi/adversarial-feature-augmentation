@@ -65,9 +65,7 @@ In all our experiments, carried out on six different datasets, we could observe 
 
 ## Reference
 
-If you use this code as part of any published research, please acknowledge the following paper:
-
-**"Adversarial Feature Augmentation for Unsupervised Domain Adaptation"**  
+**Adversarial Feature Augmentation for Unsupervised Domain Adaptation**  
 Riccardo Volpi, Pietro Morerio, Silvio Savarese and Vittorio Murino *[PDF](https://arxiv.org/abs/1711.08561)* 
 
     @InProceedings{Volpi2018Adversarial,
