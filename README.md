@@ -71,7 +71,7 @@ Riccardo Volpi, Pietro Morerio, Silvio Savarese and Vittorio Murino *[PDF](https
 @InProceedings{DIFA,
     author = {Volpi, Riccardo and Morerio, Pietro and Savarese, Silvio and Murino, Vittorio},
     title = {Adversarial Feature Augmentation for Unsupervised Domain Adaptation},
-    booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+    booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
     month = {June},
     year = {2018}
     }
