@@ -56,7 +56,7 @@ In all our experiments, carried out on six different datasets, we could observe 
 
 ![plot2](./pics/plot2.png) 
 
-*Discriminator and generator losses for Step 2*
+*Discriminator and encoder losses for Step 2*
 
 ![acc](./pics/accuracy.png) 
 
