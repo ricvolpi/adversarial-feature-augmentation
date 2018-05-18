@@ -68,7 +68,7 @@ In all our experiments, carried out on six different datasets, we could observe 
 **Adversarial Feature Augmentation for Unsupervised Domain Adaptation**  
 Riccardo Volpi, Pietro Morerio, Silvio Savarese and Vittorio Murino *[PDF](https://arxiv.org/abs/1711.08561)* 
 ```
-@InProceedings{DIFA,
+@InProceedings{Volpi2018Adversarial,
     author = {Volpi, Riccardo and Morerio, Pietro and Savarese, Silvio and Murino, Vittorio},
     title = {Adversarial Feature Augmentation for Unsupervised Domain Adaptation},
     booktitle = {The IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
