@@ -52,10 +52,7 @@ class Model(object):
 	
 	'''
 	Takes in input noise and labels, and
-	generates f_z, which is handled by the 
-	net as f(x) was handled. If labels is 
-	None, the noise samples are partitioned
-	in equal ratios.  
+	generates f(z|y)  
 	'''
 	
 	try: # just to make it work on different Tensorflow releases
