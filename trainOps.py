@@ -145,14 +145,13 @@ class TrainOps(object):
 
 
 		feed_dict = {model.noise: noise, model.images: images_batch, model.labels: labels_batch}
-	
-		avg_D_fake = sess.run(model.logits_fake, feed_dict)
-		avg_D_real = sess.run(model.logits_real, feed_dict)
 		
 		sess.run(model.d_train_op, feed_dict)
 		sess.run(model.g_train_op, feed_dict)
 		
 		if (step+1) % 100 == 0:
+		    avg_D_fake = sess.run(model.logits_fake, feed_dict)
+		    avg_D_real = sess.run(model.logits_real, feed_dict)
 		    summary, dl, gl = sess.run([model.summary_op, model.d_loss, model.g_loss], feed_dict)
 		    summary_writer.add_summary(summary, step)
 		    print ('Step: [%d/%d] d_loss: %.6f g_loss: %.6f avg_d_fake: %.2f avg_d_real: %.2f ' \
@@ -205,13 +204,12 @@ class TrainOps(object):
 		
 		feed_dict = {model.src_images: source_images_batch, model.trg_images: target_images_batch, model.noise: noise, model.labels: labels_batch}
 		
-		
 		sess.run(model.e_train_op, feed_dict) 
 		sess.run(model.d_train_op, feed_dict)
-
-		logits_real, logits_fake = sess.run([model.logits_real, model.logits_fake],feed_dict) 
 		
 		if (step+1) % 50 == 0:
+		    
+		    logits_real, logits_fake = sess.run([model.logits_real, model.logits_fake],feed_dict) 
 		    
 		    summary, e_loss, d_loss = sess.run([model.summary_op, model.e_loss, model.d_loss], feed_dict)
 		    summary_writer.add_summary(summary, step)
