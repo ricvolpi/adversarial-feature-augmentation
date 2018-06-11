@@ -160,9 +160,34 @@ class TrainOps(object):
 		    print ('Step: [%d/%d] d_loss: %.6f g_loss: %.6f avg_d_fake: %.2f avg_d_real: %.2f ' \
 			       %(step+1, self.train_feature_generator_iters, dl, gl, avg_D_fake.mean(), avg_D_real.mean()))
 		    
+		    self.eval_feature_generator(model=model, sess=sess)
+		    
+		    
 	    print 'Saving.'
 	    saver.save(sess, self.pretrained_feature_generator) 
+    
+    def eval_feature_generator(self, model, sess, no_items=10000000):
+	    
+	features = np.zeros((no_items, model.hidden_repr_size), dtype=np.float)
+	inf_labels = np.zeros((no_items,10))
+	    
+	noise = utils.sample_Z(no_items, 100, 'uniform')
+	labels = utils.one_hot(np.random.randint(10,size=no_items), 10)
 
+	i=0  
+	for n, l  in zip(np.array_split(noise, 1000), np.array_split(labels, 1000)):
+	    _feat_, inferred_labels = sess.run(fetches=[model.gen_features, model.inferred_labels], feed_dict={model.noise: n, model.labels: l})
+	    features[i:i+len(n)]= np.squeeze(_feat_)
+	    inf_labels[i:i+len(n)] = inferred_labels
+	    i+=len(n)
+	    
+	features[features >= 0] = 1
+	features[features < 0] = -1
+	tmpUnique = np.unique(features.view(np.dtype((np.void, features.dtype.itemsize*features.shape[1]))), return_counts = True)
+	uniques=tmpUnique[0].view(features.dtype).reshape(-1, features.shape[1])
+	print uniques.shape
+	print len(np.where(np.argmax(inf_labels,1)==np.argmax(labels,1))[0])/ no_items
+    
     def train_DIFA(self):
 
 	print 'Adapt with DIFA'
