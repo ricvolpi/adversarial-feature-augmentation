@@ -5,7 +5,7 @@ import os
 import numpy.random as npr
 
 flags = tf.app.flags
-flags.DEFINE_string('mode', 'train_feature_extractor', "'train_feature_extractor' or 'train_feature_generator'")
+flags.DEFINE_string('mode', 'train_feature_extractor', "'train_feature_extractor',  'train_feature_generator' or 'train_DIFA'")
 flags.DEFINE_string('gpu', '0', "'0', '1', '2' or '3'")
 FLAGS = flags.FLAGS
 
