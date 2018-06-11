@@ -160,13 +160,13 @@ class TrainOps(object):
 		    print ('Step: [%d/%d] d_loss: %.6f g_loss: %.6f avg_d_fake: %.2f avg_d_real: %.2f ' \
 			       %(step+1, self.train_feature_generator_iters, dl, gl, avg_D_fake.mean(), avg_D_real.mean()))
 		    
-		    self.eval_feature_generator(model=model, sess=sess)
+		    self.eval_feature_generator(model=model, sess=sess, no_items=10000000)
 		    
 		    
 	    print 'Saving.'
 	    saver.save(sess, self.pretrained_feature_generator) 
     
-    def eval_feature_generator(self, model, sess, no_items=10000000):
+    def eval_feature_generator(self, model, sess, no_items=1000000):
 	    
 	features = np.zeros((no_items, model.hidden_repr_size), dtype=np.float)
 	inf_labels = np.zeros((no_items,10))
@@ -186,7 +186,7 @@ class TrainOps(object):
 	tmpUnique = np.unique(features.view(np.dtype((np.void, features.dtype.itemsize*features.shape[1]))), return_counts = True)
 	uniques=tmpUnique[0].view(features.dtype).reshape(-1, features.shape[1])
 	print uniques.shape
-	print len(np.where(np.argmax(inf_labels,1)==np.argmax(labels,1))[0])/ no_items
+	print  np.mean(np.argmax(inf_labels,1)==np.argmax(labels,1))
     
     def train_DIFA(self):
 
