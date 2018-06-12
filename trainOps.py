@@ -137,6 +137,7 @@ class TrainOps(object):
             summary_writer = tf.summary.FileWriter(logdir=self.log_dir, graph=tf.get_default_graph())
             saver = tf.train.Saver()
 	    
+	    self.train_feature_generator_iters = 50000
 	    for step in range(self.train_feature_generator_iters):
 
 		i = step % int(images.shape[0] / self.batch_size)
@@ -154,7 +155,7 @@ class TrainOps(object):
 		sess.run(model.d_train_op, feed_dict)
 		sess.run(model.g_train_op, feed_dict)
 		
-		if (step+1) % 100 == 0:
+		if (step+1) % 200 == 0:
 		    summary, dl, gl = sess.run([model.summary_op, model.d_loss, model.g_loss], feed_dict)
 		    summary_writer.add_summary(summary, step)
 		    print ('Step: [%d/%d] d_loss: %.6f g_loss: %.6f avg_d_fake: %.2f avg_d_real: %.2f ' \
@@ -186,7 +187,9 @@ class TrainOps(object):
 	tmpUnique = np.unique(features.view(np.dtype((np.void, features.dtype.itemsize*features.shape[1]))), return_counts = True)
 	uniques=tmpUnique[0].view(features.dtype).reshape(-1, features.shape[1])
 	print uniques.shape
-	print  np.mean(np.argmax(inf_labels,1)==np.argmax(labels,1))
+	#~ print 'given', np.argmax(labels,1)[0]
+	#~ print 'generated', np.argmax(inf_labels,1)[0]
+	print np.mean(np.argmax(inf_labels,1)==np.argmax(labels,1))
     
     def train_DIFA(self):
 
