@@ -1,8 +1,6 @@
-# Code for the paper "Adversarial Feature Augmentation for Unsupervised Domain Adaptation"
+# Code for the paper [Adversarial Feature Augmentation for Unsupervised Domain Adaptation](https://arxiv.org/abs/1711.08561)
 
-[CVPR2018 PDF](http://openaccess.thecvf.com/content_cvpr_2018/html/Volpi_Adversarial_Feature_Augmentation_CVPR_2018_paper.html)
-
-[arXiv](https://arxiv.org/abs/1711.08561)
+[CVPR2018](http://openaccess.thecvf.com/content_cvpr_2018/html/Volpi_Adversarial_Feature_Augmentation_CVPR_2018_paper.html)
 
 **Step 0**: training a classifier on source data.
 
