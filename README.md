@@ -61,7 +61,7 @@ In all our experiments, carried out on six different datasets, we could observe 
 
 ![acc](./pics/accuracy.png) 
 
-*MNIST target accuracy*
+*MNIST target accuracy for Step 2 (iterations x50)*
 
 
 ## Reference
