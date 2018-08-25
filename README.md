@@ -14,7 +14,7 @@
 
 ``model.py``: contains the models described in the paper, implemented in Tensorflow (slim)
 
-``trainOps.py``: contains the operations to perform Step 0, Step 1 and Step 2.
+``train_op.py``: contains the operations to perform Step 0, Step 1 and Step 2.
 
 ### Prerequisites
 
