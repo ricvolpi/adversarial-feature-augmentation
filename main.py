@@ -1,7 +1,7 @@
 import os
 import tensorflow as tf
 from model import Model
-from train_op import TrainOps
+from trainOps import TrainOps
 
 flags = tf.app.flags
 flags.DEFINE_string('mode', 'train_feature_extractor',
