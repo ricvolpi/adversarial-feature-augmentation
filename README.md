@@ -19,6 +19,7 @@
 ### Prerequisites
 
 Python 2.7, Tensorflow 1.3 (PyTorch version coming soon(ish))
+
 See 'python3' branch for a version compatible with Python 3
 
 ## How it works
